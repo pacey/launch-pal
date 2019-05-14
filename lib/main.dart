@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
+import 'api/launch_page.dart';
+import 'api/launch_library.dart';
 import 'home/home_page.dart';
 
 void main() {
@@ -12,7 +14,10 @@ void main() {
 }
 
 class LaunchPalApp extends StatelessWidget {
-  // This widget is the root of your application.
+  final LaunchLibrary _launchLibrary;
+
+  LaunchPalApp() : _launchLibrary = LaunchLibrary.instance();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +25,11 @@ class LaunchPalApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: HomePage(
+        launchPage: _launchLibrary.launch(next: 20).then((response) {
+          return LaunchPage.fromJson(response.data);
+        }),
+      ),
     );
   }
 }

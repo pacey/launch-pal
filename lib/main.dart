@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
+import 'api/launch_rest_client.dart';
+
 void main() {
   Crashlytics.instance.enableInDevMode = true;
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -52,8 +54,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final launchRestClient = LaunchRestClient.instance();
 
-  void _incrementCounter() {
+  void _incrementCounter () async {
+
+    var response = await launchRestClient.next();
+    debugPrint(response.data.toString());
+
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below

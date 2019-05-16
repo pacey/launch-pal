@@ -1,9 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/material.dart';
 
-import 'api/launch_page.dart';
+import 'api/launch.dart';
 import 'api/launch_library.dart';
-import 'home/home_page.dart';
+import 'api/launch_page.dart';
+import 'api/launch_summary_page.dart';
+import 'home/home_screen.dart';
+import 'launch/launch_detail_arguments.dart';
+import 'launch/launch_detail_screen.dart';
 
 void main() {
   Crashlytics.instance.enableInDevMode = true;
@@ -25,11 +29,30 @@ class LaunchPalApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(
-        launchPage: _launchLibrary.launch(next: 20).then((response) {
-          return LaunchPage.fromJson(response.data);
-        }),
-      ),
+      initialRoute: "/",
+      routes: {
+        HomeScreen.routeName: (context) =>
+            HomeScreen(launchSummaryFuture: _getLaunchSummaries()),
+        LaunchDetailScreen.routeName: (context) {
+          final LaunchDetailArguments args =
+              ModalRoute.of(context).settings.arguments;
+          return LaunchDetailScreen(
+              title: args.title, launchFuture: _getLaunch(args.launchId));
+        },
+      },
     );
+  }
+
+  Future<LaunchSummaryPage> _getLaunchSummaries() {
+    return _launchLibrary.launchSummary(next: 20).then((response) {
+      return LaunchSummaryPage.fromJson(response.data);
+    });
+  }
+
+  Future<Launch> _getLaunch(int id) {
+    return _launchLibrary.launch(id).then((response) {
+      final launchPage = LaunchPage.fromJson(response.data);
+      return launchPage.launches.first;
+    });
   }
 }

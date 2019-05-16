@@ -11,6 +11,12 @@ abstract class LaunchLibrary {
   @Headers({
     "Accept": "application/json"
   })
-  Future<Response<Map<String, dynamic>>> launch({@Query("next") int next, @Query("mode") String mode = "verbose"});
+  Future<Response<Map<String, dynamic>>> launchSummary({@Query("next") int next = 20, String mode = "summary"});
+
+  @GET("/launch")
+  @Headers({
+    "Accept": "application/json"
+  })
+  Future<Response<Map<String, dynamic>>> launch(@Query("id") int id, {@Query("mode") String mode = "verbose"});
 
 }

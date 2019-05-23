@@ -14,6 +14,8 @@ jobs:
       - checkout
       - run: flutter doctor
       - run: echo ${GOOGLE_SERVICES} | base64 --decode > ~/project/android/app/google-services.json
+      - run: echo ${GOOGLE_SIGNING_KEY} | base64 --decode > ~/project/key.jks
+      - run: echo ${GOOGLE_KEY_PROPERTIES} | base64 --decode > ~/project/android/key.properties
       - run: flutter -v build apk
       - store_artifacts:
           path: ~/project/build/app/outputs

@@ -1,7 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:launch_pal/api/launch.dart';
 import 'package:launch_pal/api/launch_library.dart';
 import 'package:launch_pal/api/launch_page.dart';
+import 'package:url_launcher/url_launcher.dart' as launcher;
+
+import 'launch_probability.dart';
 
 class LaunchDetailScreen extends StatefulWidget {
   static const routeName = "/launch";
@@ -37,19 +42,64 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final launch = snapshot.data;
-              return Container(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(children: <Widget>[
-                  Image.network(launch.rocket.imageURL,
-                      fit: BoxFit.contain, height: 200.0),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
-                  Row(
+              final dateFormat = new DateFormat().add_yMMMd().add_Hms();
+              return Column(children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: launch.rocket.imageURL,
+                        height: 400,
+                        width: MediaQuery.of(context).size.width),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: LaunchProbability(probability: launch.probability),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
                     children: <Widget>[
-                      Flexible(child: Text("More information here"))
+                      ListTile(
+                        title: Text("Launch time"),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("NET: ${dateFormat.format(launch.net)}"),
+                            Text(
+                                "Window: ${dateFormat.format(launch.windowOpen)} - ${dateFormat.format(launch.windowClose)}")
+                          ],
+                        ),
+                      ),
+                      ListTile(
+                        title: Text("Rocket details"),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text("Agency: ${launch.lsp.name}"),
+                            Text("Family: ${launch.rocket.familyName}"),
+                            Text(
+                                "Configuration: ${launch.rocket.configuration}")
+                          ],
+                        ),
+                      ),
+                      ListTile(
+                        title: Text("Launch Location"),
+                        subtitle:
+                            Text("Pad: ${launch.location.pads.first.name}"),
+                        trailing: Icon(Icons.map),
+                        onTap: () async {
+                          if (await launcher
+                              .canLaunch(launch.location.pads.first.mapURL)) {
+                            launcher.launch(launch.location.pads.first.mapURL);
+                          }
+                        },
+                      ),
                     ],
                   ),
-                ]),
-              );
+                ),
+              ]);
             } else if (snapshot.hasError) {
               return Text(
                 "Failed to load data: ${snapshot.error}",

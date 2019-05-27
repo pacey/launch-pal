@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import "package:intl/intl.dart";
+import 'package:intl/intl.dart';
+import 'package:launch_pal/api/launch.dart';
 import 'package:launch_pal/api/launch_library.dart';
-import 'package:launch_pal/api/launch_summary_page.dart';
+import 'package:launch_pal/api/launch_page.dart';
 import 'package:launch_pal/launch/launch_detail_arguments.dart';
 import 'package:launch_pal/launch/launch_detail_screen.dart';
 
@@ -16,12 +18,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final LaunchLibrary _launchLibrary = LaunchLibrary.instance();
-  Future<LaunchSummaryPage> _launchSummaryPageFuture;
+  Future<LaunchPage> _launchPageFuture;
 
   @override
   void initState() {
     super.initState();
-    _launchSummaryPageFuture = _getLaunchSummaries();
+    _launchPageFuture = _getNextLaunches();
   }
 
   @override
@@ -31,35 +33,23 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("Launch Pal"),
       ),
       body: Center(
-        child: FutureBuilder<LaunchSummaryPage>(
-          future: _launchSummaryPageFuture,
+        child: FutureBuilder<LaunchPage>(
+          future: _launchPageFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var launches = snapshot.data.launches;
               return RefreshIndicator(
                 onRefresh: () {
-                  var future = _getLaunchSummaries();
+                  var future = _getNextLaunches();
                   setState(() {
-                    _launchSummaryPageFuture = future;
+                    _launchPageFuture = future;
                   });
                   return future;
                 },
                 child: ListView.builder(
                   itemCount: launches.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(launches[index].name),
-                      subtitle: Text(DateFormat.yMMMMd()
-                          .add_Hms()
-                          .format(launches[index].windowOpen)),
-                      trailing: Icon(Icons.chevron_right),
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, LaunchDetailScreen.routeName,
-                            arguments: LaunchDetailArguments(
-                                launches[index].name, launches[index].id));
-                      },
-                    );
+                    return _LaunchCard(launch: launches[index]);
                   },
                 ),
               );
@@ -77,8 +67,40 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<LaunchSummaryPage> _getLaunchSummaries() async {
-    var response = await _launchLibrary.launchSummary(next: 20);
-    return LaunchSummaryPage.fromJson(response.data);
+  Future<LaunchPage> _getNextLaunches() async {
+    var response = await _launchLibrary.nextLaunches(next: 20);
+    return LaunchPage.fromJson(response.data);
+  }
+}
+
+class _LaunchCard extends StatelessWidget {
+  final Launch launch;
+
+  const _LaunchCard({Key key, @required this.launch}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final dateFormat = new DateFormat.yMMMd().add_Hms();
+    return Card(
+      child: InkWell(
+        child: ListTile(
+          leading: Container(
+            width: 72,
+            alignment: Alignment.center,
+            child: CachedNetworkImage(
+              imageUrl: launch.rocket.imageURL,
+              fit: BoxFit.cover,
+            ),
+          ),
+          title: Text(launch.name),
+          subtitle: Text("NET ${dateFormat.format(launch.net)}"),
+          isThreeLine: true,
+        ),
+        onTap: () {
+          Navigator.pushNamed(context, LaunchDetailScreen.routeName,
+              arguments: LaunchDetailArguments(launch.name, launch.id));
+        },
+      ),
+    );
   }
 }

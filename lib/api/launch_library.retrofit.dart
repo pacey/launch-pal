@@ -20,9 +20,9 @@ class _LaunchLibrary extends LaunchLibrary {
 
   Dio _dio;
 
-  Future<Response<Map<String, dynamic>>> launchSummary(
-      {int next = 20, String mode = "summary"}) async {
-    final queryParameters = <String, dynamic>{'next': next};
+  Future<Response<Map<String, dynamic>>> nextLaunches(
+      {int next = 20, String mode = "verbose"}) async {
+    final queryParameters = <String, dynamic>{'next': next, 'mode': mode};
     final data = <String, dynamic>{};
     return _dio.request<Map<String, dynamic>>('/launch',
         queryParameters: queryParameters,

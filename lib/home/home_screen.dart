@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:launch_pal/api/launch.dart';
 import 'package:launch_pal/api/launch_library.dart';
 import 'package:launch_pal/api/launch_page.dart';
+import 'package:launch_pal/common/launch_date_time.dart';
 import 'package:launch_pal/launch/launch_detail_arguments.dart';
 import 'package:launch_pal/launch/launch_detail_screen.dart';
 
@@ -80,7 +80,6 @@ class _LaunchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = new DateFormat.yMMMd().add_Hms();
     return Card(
       child: InkWell(
         child: ListTile(
@@ -93,7 +92,7 @@ class _LaunchCard extends StatelessWidget {
             ),
           ),
           title: Text(launch.name),
-          subtitle: Text("NET ${dateFormat.format(launch.net)}"),
+          subtitle: LaunchDateTime(launch: launch),
           isThreeLine: true,
         ),
         onTap: () {

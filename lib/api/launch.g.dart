@@ -32,5 +32,7 @@ Launch _$LaunchFromJson(Map<String, dynamic> json) {
           ?.toList(),
       json['location'] == null
           ? null
-          : Location.fromJson(json['location'] as Map<String, dynamic>));
+          : Location.fromJson(json['location'] as Map<String, dynamic>),
+      json['tbddate'] as int,
+      json['tbdtime'] as int);
 }

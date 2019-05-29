@@ -9,9 +9,6 @@ class LaunchProbability extends StatelessWidget {
   Widget build(BuildContext context) {
     return Chip(
       label: Text(probability == -1 ? "Unknown" : "$probability%"),
-      labelStyle: TextStyle(color: Colors.white),
-      backgroundColor:
-          probability == -1 ? Colors.black87 : Colors.green[probability * 10],
     );
   }
 }

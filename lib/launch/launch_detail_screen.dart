@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:launch_pal/api/launch.dart';
 import 'package:launch_pal/api/launch_library.dart';
 import 'package:launch_pal/api/launch_page.dart';
+import 'package:launch_pal/common/launch_date_time.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 
 import 'launch_probability.dart';
@@ -41,18 +41,10 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final launch = snapshot.data;
-            final dateFormat = new DateFormat().add_yMMMd().add_Hms();
             final mainContainerChildren = <Widget>[
               ListTile(
                 title: Text("Launch time"),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("NET ${dateFormat.format(launch.net)}"),
-                    Text(
-                        "${dateFormat.format(launch.windowOpen)} - ${dateFormat.format(launch.windowClose)}")
-                  ],
-                ),
+                subtitle: LaunchDateTime(launch: launch,),
               ),
             ];
 
@@ -131,7 +123,7 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
               style: TextStyle(color: Colors.red),
             );
           } else {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),

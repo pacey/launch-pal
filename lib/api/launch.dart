@@ -18,6 +18,8 @@ class Launch {
   final DateTime windowClose;
   @JsonKey(name: "isonet")
   final DateTime net;
+  final int tbddate;
+  final int tbdtime;
   final int probability;
   final DateTime changed;
   final Agency lsp;
@@ -26,7 +28,7 @@ class Launch {
   final Location location;
 
   Launch(this.id, this.name, this.status, this.windowOpen, this.windowClose,
-      this.net, this.probability, this.changed, this.lsp, this.rocket, this.missions, this.location);
+      this.net, this.probability, this.changed, this.lsp, this.rocket, this.missions, this.location, this.tbddate, this.tbdtime);
 
   factory Launch.fromJson(Map<String, dynamic> json) => _$LaunchFromJson(json);
 }

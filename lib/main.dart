@@ -19,7 +19,7 @@ class LaunchPalApp extends StatelessWidget {
     return MaterialApp(
       title: 'Launch Pal',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        brightness: Brightness.dark,
       ),
       initialRoute: "/",
       routes: {

@@ -36,104 +36,104 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: FutureBuilder<Launch>(
-          future: _launchFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final launch = snapshot.data;
-              final dateFormat = new DateFormat().add_yMMMd().add_Hms();
-              final mainContainerChildren = <Widget>[
+      body: FutureBuilder<Launch>(
+        future: _launchFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final launch = snapshot.data;
+            final dateFormat = new DateFormat().add_yMMMd().add_Hms();
+            final mainContainerChildren = <Widget>[
+              ListTile(
+                title: Text("Launch time"),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("NET ${dateFormat.format(launch.net)}"),
+                    Text(
+                        "${dateFormat.format(launch.windowOpen)} - ${dateFormat.format(launch.windowClose)}")
+                  ],
+                ),
+              ),
+            ];
+
+            if (launch.rocket != null) {
+              mainContainerChildren.add(
                 ListTile(
-                  title: Text("Launch time"),
+                  title: Text("Rocket details"),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("NET ${dateFormat.format(launch.net)}"),
-                      Text(
-                          "${dateFormat.format(launch.windowOpen)} - ${dateFormat.format(launch.windowClose)}")
+                      Text("Agency: ${launch.lsp.name}"),
+                      Text("Family: ${launch.rocket.familyName}"),
+                      Text("Configuration: ${launch.rocket.configuration}")
                     ],
                   ),
                 ),
-              ];
-
-              if (launch.rocket != null) {
-                mainContainerChildren.add(
-                  ListTile(
-                    title: Text("Rocket details"),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Agency: ${launch.lsp.name}"),
-                        Text("Family: ${launch.rocket.familyName}"),
-                        Text("Configuration: ${launch.rocket.configuration}")
-                      ],
-                    ),
-                  ),
-                );
-              }
-
-              if (launch.location?.pads?.isNotEmpty ?? false) {
-                mainContainerChildren.add(
-                  ListTile(
-                    title: Text("Launch location"),
-                    subtitle: Text("${launch.location.pads.first.name}"),
-                    trailing: Icon(Icons.map),
-                    onTap: () async {
-                      if (await launcher
-                          .canLaunch(launch.location.pads.first.mapURL)) {
-                        launcher.launch(launch.location.pads.first.mapURL);
-                      }
-                    },
-                  ),
-                );
-              }
-
-              if (launch.missions?.isNotEmpty ?? false) {
-                mainContainerChildren.add(
-                  ListTile(
-                    title: Text("Mission details"),
-                    subtitle: Text(launch.missions.first.description),
-                  ),
-                );
-              }
-
-              return SingleChildScrollView(
-                child: Column(children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      Center(
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: launch.rocket.imageURL,
-                          height: 300,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child:
-                            LaunchProbability(probability: launch.probability),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      children: mainContainerChildren,
-                    ),
-                  ),
-                ]),
               );
-            } else if (snapshot.hasError) {
-              return Text(
-                "Failed to load data: ${snapshot.error}",
-                style: TextStyle(color: Colors.red),
-              );
-            } else {
-              return CircularProgressIndicator();
             }
-          },
-        ),
+
+            if (launch.location?.pads?.isNotEmpty ?? false) {
+              mainContainerChildren.add(
+                ListTile(
+                  title: Text("Launch location"),
+                  subtitle: Text("${launch.location.pads.first.name}"),
+                  trailing: Icon(Icons.map),
+                  onTap: () async {
+                    if (await launcher
+                        .canLaunch(launch.location.pads.first.mapURL)) {
+                      launcher.launch(launch.location.pads.first.mapURL);
+                    }
+                  },
+                ),
+              );
+            }
+
+            if (launch.missions?.isNotEmpty ?? false) {
+              mainContainerChildren.add(
+                ListTile(
+                  title: Text("Mission details"),
+                  subtitle: Text(launch.missions.first.description),
+                ),
+              );
+            }
+
+            return SingleChildScrollView(
+              child: Column(children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    Center(
+                      child: CachedNetworkImage(
+                        height: 300,
+                        fit: BoxFit.fitHeight,
+                        imageUrl: launch.rocket.imageURL,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: LaunchProbability(probability: launch.probability),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: mainContainerChildren,
+                  ),
+                ),
+              ]),
+            );
+          } else if (snapshot.hasError) {
+            return Text(
+              "Failed to load data: ${snapshot.error}",
+              style: TextStyle(color: Colors.red),
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
       ),
     );
   }

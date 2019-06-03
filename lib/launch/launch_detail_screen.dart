@@ -4,9 +4,8 @@ import 'package:launch_pal/api/launch.dart';
 import 'package:launch_pal/api/launch_library.dart';
 import 'package:launch_pal/api/launch_page.dart';
 import 'package:launch_pal/common/launch_date_time.dart';
+import 'package:launch_pal/common/launch_status.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
-
-import 'launch_probability.dart';
 
 class LaunchDetailScreen extends StatefulWidget {
   static const routeName = "/launch";
@@ -44,7 +43,7 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
             final mainContainerChildren = <Widget>[
               ListTile(
                 title: Text("Launch time"),
-                subtitle: LaunchDateTime(launch: launch,),
+                subtitle: LaunchDateTime(launch: launch),
               ),
             ];
 
@@ -104,7 +103,7 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
                       alignment: Alignment.topRight,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
-                        child: LaunchProbability(probability: launch.probability),
+                        child: LaunchStatus(launch: launch),
                       ),
                     ),
                   ],

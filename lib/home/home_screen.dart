@@ -4,6 +4,7 @@ import 'package:launch_pal/api/launch.dart';
 import 'package:launch_pal/api/launch_library.dart';
 import 'package:launch_pal/api/launch_page.dart';
 import 'package:launch_pal/common/launch_date_time.dart';
+import 'package:launch_pal/common/launch_status.dart';
 import 'package:launch_pal/launch/launch_detail_arguments.dart';
 import 'package:launch_pal/launch/launch_detail_screen.dart';
 
@@ -82,18 +83,28 @@ class _LaunchCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        child: ListTile(
-          leading: Container(
-            width: 72,
-            alignment: Alignment.center,
-            child: CachedNetworkImage(
-              imageUrl: launch.rocket.imageURL,
-              fit: BoxFit.cover,
-            ),
-          ),
-          title: Text(launch.name),
-          subtitle: LaunchDateTime(launch: launch),
-          isThreeLine: true,
+        child: Column(
+          children: <Widget>[
+            Stack(children: <Widget>[
+              Center(
+                child: CachedNetworkImage(
+                  height: 200,
+                  imageUrl: launch.rocket.imageURL,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: LaunchStatus(launch: launch),
+                ),
+              ),
+            ]),
+            ListTile(
+                title: Text(launch.name),
+                subtitle: LaunchDateTime(launch: launch))
+          ],
         ),
         onTap: () {
           Navigator.pushNamed(context, LaunchDetailScreen.routeName,

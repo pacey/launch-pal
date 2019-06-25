@@ -4,7 +4,7 @@ import 'package:launch_pal/api/launch.dart';
 import 'package:launch_pal/api/launch_library.dart';
 import 'package:launch_pal/api/launch_page.dart';
 import 'package:launch_pal/common/launch_date_time.dart';
-import 'package:launch_pal/common/launch_status.dart';
+import 'package:launch_pal/common/launch_reminder_bell.dart';
 import 'package:launch_pal/launch/launch_detail_arguments.dart';
 import 'package:launch_pal/launch/launch_detail_screen.dart';
 
@@ -83,28 +83,12 @@ class _LaunchCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        child: Column(
-          children: <Widget>[
-            Stack(children: <Widget>[
-              Center(
-                child: CachedNetworkImage(
-                  height: 200,
-                  imageUrl: launch.rocket.imageURL,
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: LaunchStatus(launch: launch),
-                ),
-              ),
-            ]),
-            ListTile(
-                title: Text(launch.name),
-                subtitle: LaunchDateTime(launch: launch))
-          ],
+        child: ListTile(
+            leading: CachedNetworkImage(
+                imageUrl: launch.rocket.imageURL, width: 100, height: 100),
+            title: Text(launch.name),
+            subtitle: LaunchDateTime(launch: launch),
+          trailing: LaunchReminderBell(launch),
         ),
         onTap: () {
           Navigator.pushNamed(context, LaunchDetailScreen.routeName,

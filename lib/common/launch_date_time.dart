@@ -7,8 +7,9 @@ final dateTimeFormat = new DateFormat.yMMMd().add_Hms();
 
 class LaunchDateTime extends StatelessWidget {
   final Launch launch;
+  final bool showFullWindow;
 
-  const LaunchDateTime({Key key, this.launch}) : super(key: key);
+  const LaunchDateTime({Key key, this.launch, this.showFullWindow = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class LaunchDateTime extends StatelessWidget {
       dateFormatter = dateTimeFormat;
     }
 
-    if (launch.windowOpen == launch.windowClose) {
+    if (!this.showFullWindow || launch.windowOpen == launch.windowClose) {
       return Text("${dateFormatter.format(launch.windowOpen.toLocal())}");
     } else {
       return Text(

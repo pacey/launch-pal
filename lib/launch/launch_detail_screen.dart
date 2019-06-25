@@ -43,7 +43,7 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
             final mainContainerChildren = <Widget>[
               ListTile(
                 title: Text("Launch time"),
-                subtitle: LaunchDateTime(launch: launch),
+                subtitle: LaunchDateTime(launch: launch, showFullWindow: true,),
               ),
             ];
 

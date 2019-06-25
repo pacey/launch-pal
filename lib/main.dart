@@ -1,15 +1,17 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
+import 'database/database_manager.dart';
 import 'home/home_screen.dart';
 import 'launch/launch_detail_arguments.dart';
 import 'launch/launch_detail_screen.dart';
 
-void main() {
+void main() async {
   Crashlytics.instance.enableInDevMode = true;
   FlutterError.onError = (FlutterErrorDetails details) {
     Crashlytics.instance.onError(details);
   };
+  await DatabaseManager.instance.database;
   runApp(LaunchPalApp());
 }
 
@@ -19,7 +21,7 @@ class LaunchPalApp extends StatelessWidget {
     return MaterialApp(
       title: 'Launch Pal',
       theme: ThemeData(
-        brightness: Brightness.dark,
+        primarySwatch: Colors.deepPurple
       ),
       initialRoute: "/",
       routes: {

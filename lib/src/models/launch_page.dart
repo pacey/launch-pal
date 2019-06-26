@@ -9,7 +9,9 @@ part 'launch_page.g.dart';
 class LaunchPage extends Page {
   final List<Launch> launches;
 
-  LaunchPage(int offset, int count, int total, this.launches) : super(offset, count, total);
+  LaunchPage(int offset, int count, int total, this.launches)
+      : super(offset, count, total);
 
-  factory LaunchPage.fromJson(Map<String, dynamic> json) => _$LaunchPageFromJson(json);
+  factory LaunchPage.fromJson(Map<String, dynamic> json) =>
+      _$LaunchPageFromJson(json);
 }

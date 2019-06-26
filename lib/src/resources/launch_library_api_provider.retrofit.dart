@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'launch_library.dart';
+part of 'launch_library_api_provider.dart';
 
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
 
-class _LaunchLibrary extends LaunchLibrary {
-  _LaunchLibrary([Dio dio]) {
+class _LaunchLibraryApiProvider extends LaunchLibraryApiProvider {
+  _LaunchLibraryApiProvider([Dio dio]) {
     _dio = dio;
     if (_dio == null) {
       _dio = Dio();

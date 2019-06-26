@@ -16,7 +16,9 @@ class LaunchSummary {
   final DateTime changed;
   final String lsp;
 
-  LaunchSummary(this.id, this.name, this.status, this.windowOpen, this.windowClose, this.net, this.probability, this.changed, this.lsp);
+  LaunchSummary(this.id, this.name, this.status, this.windowOpen,
+      this.windowClose, this.net, this.probability, this.changed, this.lsp);
 
-  factory LaunchSummary.fromJson(Map<String, dynamic> json) => _$LaunchSummaryFromJson(json);
+  factory LaunchSummary.fromJson(Map<String, dynamic> json) =>
+      _$LaunchSummaryFromJson(json);
 }

@@ -27,8 +27,21 @@ class Launch {
   final List<Mission> missions;
   final Location location;
 
-  Launch(this.id, this.name, this.status, this.windowOpen, this.windowClose,
-      this.net, this.probability, this.changed, this.lsp, this.rocket, this.missions, this.location, this.tbddate, this.tbdtime);
+  Launch(
+      this.id,
+      this.name,
+      this.status,
+      this.windowOpen,
+      this.windowClose,
+      this.net,
+      this.probability,
+      this.changed,
+      this.lsp,
+      this.rocket,
+      this.missions,
+      this.location,
+      this.tbddate,
+      this.tbdtime);
 
   factory Launch.fromJson(Map<String, dynamic> json) => _$LaunchFromJson(json);
 }

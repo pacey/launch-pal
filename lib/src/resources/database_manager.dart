@@ -3,6 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseManager {
   DatabaseManager._();
+
   static final DatabaseManager instance = DatabaseManager._();
   Database _database;
 
@@ -14,8 +15,7 @@ class DatabaseManager {
   }
 
   _initialise() async {
-    return await openDatabase(
-        join(await getDatabasesPath(), "launchpal.db"),
+    return await openDatabase(join(await getDatabasesPath(), "launchpal.db"),
         onCreate: (db, version) {
       switch (version) {
         case 1:

@@ -1,12 +1,12 @@
+import 'package:launch_pal/src/models/launch_reminder.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'database_manager.dart';
-import 'launch_reminder.dart';
 
 class LaunchReminderRepository {
   Future<LaunchReminder> create(LaunchReminder launchReminder) async {
     var database = await DatabaseManager.instance.database;
-    await database.insert("launch_reminder", launchReminder.toMap(),
+    await database.insert("launch_reminder", launchReminder.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     return launchReminder;
   }
@@ -24,7 +24,7 @@ class LaunchReminderRepository {
     if (maps.isEmpty) {
       return null;
     } else {
-      return LaunchReminder.fromMap(maps[0]);
+      return LaunchReminder.fromJson(maps[0]);
     }
   }
 }

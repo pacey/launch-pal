@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:launch_pal/api/launch.dart';
-import 'package:launch_pal/database/launch_reminder.dart';
-import 'package:launch_pal/database/launch_reminder_repository.dart';
+import 'package:launch_pal/src/models/launch.dart';
+import 'package:launch_pal/src/models/launch_reminder.dart';
+import 'package:launch_pal/src/resources/launch_reminder_repository.dart';
 
 class LaunchReminderBell extends StatefulWidget {
   final Launch _launch;

@@ -13,7 +13,9 @@ class Location {
   final String countryCode;
   final List<Pad> pads;
 
-  Location(this.id, this.name, this.infoURL, this.wikiURL, this.countryCode, this.pads);
+  Location(this.id, this.name, this.infoURL, this.wikiURL, this.countryCode,
+      this.pads);
 
-  factory Location.fromJson(Map<String, dynamic> json) => _$LocationFromJson(json);
+  factory Location.fromJson(Map<String, dynamic> json) =>
+      _$LocationFromJson(json);
 }

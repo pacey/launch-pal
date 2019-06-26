@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:launch_pal/api/launch.dart';
+import 'package:launch_pal/src/models/launch.dart';
 
 final dateFormat = new DateFormat.yMMMd();
 final dateTimeFormat = new DateFormat.yMMMd().add_Hms();
@@ -9,7 +9,8 @@ class LaunchDateTime extends StatelessWidget {
   final Launch launch;
   final bool showFullWindow;
 
-  const LaunchDateTime({Key key, this.launch, this.showFullWindow = false}) : super(key: key);
+  const LaunchDateTime({Key key, this.launch, this.showFullWindow = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

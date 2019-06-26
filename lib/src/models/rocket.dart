@@ -18,8 +18,17 @@ class Rocket {
   final String imageURL;
   final List<Agency> agencies;
 
-  Rocket(this.id, this.name, this.configuration, this.familyName, this.wikiURL,
-      this.infoURLs, this.infoURL, this.imageSizes, this.imageURL, this.agencies);
+  Rocket(
+      this.id,
+      this.name,
+      this.configuration,
+      this.familyName,
+      this.wikiURL,
+      this.infoURLs,
+      this.infoURL,
+      this.imageSizes,
+      this.imageURL,
+      this.agencies);
 
   factory Rocket.fromJson(Map<String, dynamic> json) => _$RocketFromJson(json);
 }

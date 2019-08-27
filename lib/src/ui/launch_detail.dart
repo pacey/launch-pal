@@ -9,9 +9,14 @@ import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class LaunchDetail extends StatefulWidget {
   final String title;
+  final String imageUrl;
   final int launchId;
 
-  LaunchDetail({Key key, @required this.title, @required this.launchId})
+  LaunchDetail(
+      {Key key,
+      @required this.title,
+      @required this.imageUrl,
+      @required this.launchId})
       : super(key: key);
 
   @override
@@ -101,10 +106,13 @@ class _LaunchDetailState extends State<LaunchDetail> {
                   Stack(
                     children: <Widget>[
                       Center(
-                        child: CachedNetworkImage(
-                          height: 300,
-                          fit: BoxFit.fitHeight,
-                          imageUrl: launch.rocket.imageURL,
+                        child: Hero(
+                          tag: "rocket-${launch.id}",
+                          child: CachedNetworkImage(
+                            height: 300,
+                            fit: BoxFit.fitHeight,
+                            imageUrl: launch.rocket.imageURL,
+                          ),
                         ),
                       ),
                       Align(
@@ -130,7 +138,19 @@ class _LaunchDetailState extends State<LaunchDetail> {
                 style: TextStyle(color: Colors.red),
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Column(
+                children: <Widget>[
+                  Hero(
+                    tag: "rocket-${widget.launchId}",
+                    child: CachedNetworkImage(
+                      height: 300,
+                      fit: BoxFit.fitHeight,
+                      imageUrl: widget.imageUrl,
+                    ),
+                  ),
+                  Center(child: CircularProgressIndicator())
+                ],
+              );
             }
           }),
     );

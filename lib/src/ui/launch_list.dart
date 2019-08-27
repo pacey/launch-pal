@@ -5,7 +5,6 @@ import 'package:launch_pal/src/blocs/launches_bloc.dart';
 import 'package:launch_pal/src/models/launch.dart';
 import 'package:launch_pal/src/models/launch_page.dart';
 import 'package:launch_pal/src/ui/common/launch_date_time.dart';
-import 'package:launch_pal/src/ui/common/launch_reminder_bell.dart';
 import 'package:launch_pal/src/ui/launch_detail.dart';
 
 class LaunchList extends StatefulWidget {
@@ -70,15 +69,19 @@ class _LaunchListState extends State<LaunchList> {
     return Card(
       child: InkWell(
         child: ListTile(
-          leading: CachedNetworkImage(
-              imageUrl: launch.rocket.imageURL, width: 100, height: 100),
+          leading: Hero(
+              tag: "rocket-${launch.id}",
+              child: CachedNetworkImage(
+                  imageUrl: launch.rocket.imageURL,
+                  width: 50,
+                  height: 100,
+                  fit: BoxFit.cover)),
           title: Text(launch.name),
           subtitle: LaunchDateTime(launch: launch),
-          trailing: LaunchReminderBell(launch),
         ),
         onTap: () {
           final page = LaunchDetailBlocProvider(
-              child: LaunchDetail(title: launch.name, launchId: launch.id));
+              child: LaunchDetail(title: launch.name, imageUrl: launch.rocket.imageURL, launchId: launch.id));
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return page;
           }));
